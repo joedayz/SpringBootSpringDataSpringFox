@@ -1,7 +1,6 @@
 package pe.joedayz.restapis.controllers;
 
 
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,26 +33,6 @@ public class TodoTypeController {
     return "Hello World from Spring Boot !";
   }
 
-  /**
-   * expose GetMapping en el /read endpoint
-   * @return TodoType
-   */
-  @GetMapping(value="/read", produces = {"application/json", "application/xml"})
-  public TodoType readTodoType(){
-    TodoType todoType = new TodoType();
-    todoType.setCode("PERSONAL");
-    todoType.setDescription("Todo para personal work");
-    return todoType;
-  }
-
-  @PostMapping(value="/create", produces = {"application/json", "application/xml"})
-  public TodoType createTodoType(){
-    TodoType todoType = new TodoType();
-    todoType.setCode("PROFESSIONAL");
-    todoType.setDescription("Todo para professional work");
-    return todoType;
-  }
-
   @PostMapping(consumes={"application/json", "application/xml"},
       produces = {"application/json", "application/xml"})
   public TodoType create(@RequestBody TodoType todoType) {
@@ -61,9 +40,14 @@ public class TodoTypeController {
   }
 
   @GetMapping(value = "/{code}", produces = {"application/xml"})
-  public TodoType read(@PathVariable("code") String code) {
+  public ResponseEntity<TodoType> read(@PathVariable("code") String code) {
     TodoType todoType = todoTypeService.findByCode(code);
-    return todoType;
+    if(null != todoType) {
+      return new ResponseEntity<>(todoType, HttpStatus.OK);
+    }else{
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
   }
 
   @PutMapping
@@ -80,5 +64,7 @@ public class TodoTypeController {
       return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
   }
+
+
 
 }
