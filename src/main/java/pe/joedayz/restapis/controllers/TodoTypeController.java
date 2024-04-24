@@ -1,7 +1,10 @@
 package pe.joedayz.restapis.controllers;
 
 
+import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pe.joedayz.restapis.domains.TodoType;
 import pe.joedayz.restapis.services.TodoTypeService;
@@ -35,7 +39,7 @@ public class TodoTypeController {
 
   @PostMapping(consumes={"application/json", "application/xml"},
       produces = {"application/json", "application/xml"})
-  public TodoType create(@RequestBody TodoType todoType) {
+  public TodoType create(@RequestBody @Valid TodoType todoType) {
     return todoTypeService.create(todoType);
   }
 
@@ -65,6 +69,11 @@ public class TodoTypeController {
     }
   }
 
+  @GetMapping()
+  public List<TodoType> finaAll(@RequestParam  String sort, @RequestParam String order,
+      @RequestParam int pageNumber, @RequestParam int numOfRecords) {
+    return todoTypeService.findAll(sort, Sort.Direction.fromString(order), pageNumber, numOfRecords);
+  }
 
 
 }

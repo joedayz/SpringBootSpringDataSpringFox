@@ -8,13 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import lombok.Data;
 
 @Data
 @Entity
-//@Table(name = "T_TODOS")
+@NamedQuery(name = "Todo.fetchAllDone", query = "SELECT t FROM Todo t WHERE t.done = true")
+@NamedQuery(name="Todo.fetchAllByName", query = "SELECT t FROM Todo t WHERE t.title = ?1")
 public class Todo {
 
   @Id
