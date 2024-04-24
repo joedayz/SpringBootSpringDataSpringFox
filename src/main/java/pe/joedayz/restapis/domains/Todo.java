@@ -12,18 +12,22 @@ import jakarta.persistence.NamedQuery;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.data.domain.AbstractAggregateRoot;
+import pe.joedayz.restapis.events.TodoCreationEvent;
+import pe.joedayz.restapis.utils.validators.TitleConstraint;
 
 @Data
 @Entity
 @NamedQuery(name = "Todo.fetchAllDone", query = "SELECT t FROM Todo t WHERE t.done = true")
 @NamedQuery(name="Todo.fetchAllByName", query = "SELECT t FROM Todo t WHERE t.title = ?1")
-public class Todo {
+public class Todo extends AbstractAggregateRoot<Todo> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO) // IDENTITY, SEQUENCE, TABLE
   private long id;
 
-  @NotNull
+  //@NotNull
+  @TitleConstraint
   private String title;
 
   @JsonIgnore
@@ -48,5 +52,9 @@ public class Todo {
   @ManyToOne
   @JsonProperty("type")
   private TodoType todoType;
+
+  public void afterSave() {
+    registerEvent(new TodoCreationEvent());
+  }
 
 }

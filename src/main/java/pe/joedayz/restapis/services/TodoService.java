@@ -11,7 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import pe.joedayz.restapis.domains.Todo;
+import pe.joedayz.restapis.events.TodoCreationEvent;
 import pe.joedayz.restapis.repositories.TodoRepository;
 
 @Service  // proveernos una instancia SINGLETON de esta clase
@@ -26,7 +30,16 @@ public class TodoService {
     this.todoRepository = todoRepository;
   }
 
+
+  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+  public void handleTodoCreationEvent(TodoCreationEvent todoCreationEvent) {
+    System.out.println("Handled TodoCreationEvent....");
+  }
+
+
+  @Transactional
   public Todo create(Todo todo) {
+    todo.afterSave(); // registrar el TodoCreationEvent
     return todoRepository.save(todo);
   }
 
