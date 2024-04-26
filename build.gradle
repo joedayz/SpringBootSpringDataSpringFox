@@ -20,6 +20,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// spring-data-jpa, hibernate-core, jakarta.persistence-api
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	runtimeOnly 'com.h2database:h2'  // PostgreSQL, MySQL, Oracle, SQL Server
 	compileOnly 'org.projectlombok:lombok'
