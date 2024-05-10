@@ -9,7 +9,7 @@ import pe.joedayz.restapis.domains.TodoType;
 
 import java.util.List;
 
-@RepositoryRestResource
+//@RepositoryRestResource
 public interface TodoTypeRestRepository extends CrudRepository<TodoType, String>,
     PagingAndSortingRepository<TodoType, String> {
 

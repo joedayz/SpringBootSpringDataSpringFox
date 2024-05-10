@@ -1,5 +1,11 @@
 package pe.joedayz.restapis.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 
@@ -23,6 +29,7 @@ import pe.joedayz.restapis.services.TodoTypeService;
 import pe.joedayz.restapis.utils.aop.AuditLoggable;
 import pe.joedayz.restapis.utils.aop.LogMethodDetails;
 
+@Tag(name = "Todo", description = "Todo API")
 @RestController
 @RequestMapping("/api/todo")
 public class TodoController {
@@ -42,6 +49,11 @@ public class TodoController {
     return todoService.create(todo);
   }
 
+  @Operation(summary = "Get a Todo by Id", description = "Get a Todo by Id")
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Todo.class), mediaType = "application/json") }),
+          @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+          @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
   @GetMapping("/{id}")
   @LogMethodDetails
   public ResponseEntity<Todo> read(@PathVariable("id") Long id) {

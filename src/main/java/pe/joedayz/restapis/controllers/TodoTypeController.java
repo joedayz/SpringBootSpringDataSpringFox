@@ -43,7 +43,7 @@ public class TodoTypeController {
     return todoTypeService.create(todoType);
   }
 
-  @GetMapping(value = "/{code}", produces = {"application/xml"})
+  @GetMapping(value = "/{code}", produces = {"application/xml", "application/json"})
   public ResponseEntity<TodoType> read(@PathVariable("code") String code) {
     TodoType todoType = todoTypeService.findByCode(code);
     if(null != todoType) {
